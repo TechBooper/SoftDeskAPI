@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "myapp",
     'rest_framework',
-    'rest_framework',
     'rest_framework_simplejwt',
     'users',
     'projects',
@@ -56,6 +55,18 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Token expiration time
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Refresh token expiration time
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,  # Ensure this is set to your secret key
+    'AUTH_HEADER_TYPES': ('Bearer',),  # The prefix used in the Authorization header
 }
 
 MIDDLEWARE = [
