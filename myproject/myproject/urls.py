@@ -16,14 +16,13 @@ router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', RegisterView.as_view(), name='register'),
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/projects/', include('projects.urls')),  
     path('api/comments/', include('comments.urls')),  
     path('api/issues/', include('issues.urls')),      
     path('api/users/', include('users.urls')),
-    path('api/auth/', include('authentication.urls')),
     path("admin/", admin.site.urls),
 ]        
