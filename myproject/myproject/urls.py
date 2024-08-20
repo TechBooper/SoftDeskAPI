@@ -4,9 +4,10 @@ from myapp.views import RegisterView, LoginView
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from users.views import UserViewSet
-from projects.views import ProjectViewSet
+from projects.views import ProjectViewSet, AddContributorView, RemoveContributorView
 from issues.views import IssueViewSet
 from comments.views import CommentViewSet
+
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -25,4 +26,6 @@ urlpatterns = [
     path('api/issues/', include('issues.urls')),      
     path('api/users/', include('users.urls')),
     path("admin/", admin.site.urls),
+    path('projects/<int:project_id>/contributors/', AddContributorView.as_view(), name='add-contributor'),
+    path('api/projects/<int:project_id>/contributors/<int:user_id>/', RemoveContributorView.as_view(), name='remove-contributor'),
 ]        
