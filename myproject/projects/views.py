@@ -19,7 +19,7 @@ class IsAuthorOrReadOnly(BasePermission):
         return obj.author == request.user
 
 class ProjectViewSet(viewsets.ModelViewSet):
-    queryset = Project.objects.all()
+    queryset = Project.objects.all().order_by('id')
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
 

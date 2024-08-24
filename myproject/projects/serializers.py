@@ -7,6 +7,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = ['id', 'name', 'description', 'type', 'author', 'created_time']
 
+    def get_queryset(self):
+        return Project.objects.all().order_by('id') 
+
 class ContributorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contributor
