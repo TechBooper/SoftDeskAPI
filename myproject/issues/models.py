@@ -1,6 +1,7 @@
 from django.db import models
 from projects.models import Project
 from users.models import User
+import uuid
 
 class Issue(models.Model):
     LOW = 'LOW'
@@ -30,12 +31,13 @@ class Issue(models.Model):
         (FINISHED, 'Finished'),
     ]
 
-    title = models.CharField(max_length=100)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
     description = models.TextField()
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='issues')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_issues')
-    assignee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_issues')
-    priority = models.CharField(max_length=5, choices=PRIORITY_CHOICES)
-    tag = models.CharField(max_length=10, choices=TAG_CHOICES)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=TODO)
+    project = models.ForeignKey(Project, related_name='issues', on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    assignee = models.ForeignKey(User, related_name='assigned_issues', on_delete=models.SET_NULL, null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
+    priority = models.CharField(max_length=10, choices=[('LOW', 'Low'), ('MEDIUM', 'Medium'), ('HIGH', 'High')])
+    label = models.CharField(max_length=10, choices=[('BUG', 'Bug'), ('FEATURE', 'Feature'), ('TASK', 'Task')])
+    status = models.CharField(max_length=15, choices=[('TODO', 'To Do'), ('IN_PROGRESS', 'In Progress'), ('FINISHED', 'Finished')])

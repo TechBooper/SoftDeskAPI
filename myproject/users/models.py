@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser, Group, Permission, User
 from django.db import models
 
 class User(AbstractUser):
@@ -22,3 +22,5 @@ class User(AbstractUser):
         help_text=('Specific permissions for this user.'),
         related_query_name='user',
     )
+
+
