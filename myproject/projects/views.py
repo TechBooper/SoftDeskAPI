@@ -38,22 +38,27 @@ class AddContributorView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        # Retrieve the project and user based on the provided IDs
+        
         project = Project.objects.get(id=kwargs['project_id'])
         user = User.objects.get(id=request.data['user_id'])
         
-        # Debug print to check request user and project author
+        
         print(f"Request user: {request.user}, Project author: {project.author}")
         print(f"Project ID: {project.id}, User ID: {request.user.id}")
 
-        # Check if the request user is the author of the project
+        
         if project.author != request.user:
             return Response({"detail": "You do not have permission to add contributors to this project."},
                             status=status.HTTP_403_FORBIDDEN)
 
-        # Add the contributor
+        
         Contributor.objects.create(project=project, user=user)
         return Response({"detail": "Contributor added successfully."}, status=status.HTTP_201_CREATED)
+    
+    def delete(self, request, *args, **kwargs):
+        project = self.get_object()
+        project.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class RemoveContributorView(generics.DestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
