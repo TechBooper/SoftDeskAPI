@@ -1,4 +1,4 @@
-- **SoftDeskAPI**
+#**SoftDeskAPI**#
 
 SoftDeskAPI is a RESTful API that enables users to assign contributors for creating projects, managing issues, and adding comments. This repository contains the core functionalities for authentication, project creation, issue tracking, and associated comments.
 
