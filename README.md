@@ -26,8 +26,11 @@ Handle and manage user profiles within the system.
 
 # **How to Install**
 
-Clone the repository: git clone https://github.com/TechBooper/SoftDeskAPI.git
-Go to the main directory: cd SoftDeskAPI/myproject
-Install the dependencies: pip install -r requirements.txt
-Run the server: python manage.py runserver
+*Clone the repository:* `git clone https://github.com/TechBooper/SoftDeskAPI.git`
+
+*Go to the main directory:* `cd SoftDeskAPI/myproject`
+
+*Install the dependencies:* `pip install -r requirements.txt`
+
+*Run the server:* `python manage.py runserver`
 
