@@ -19,17 +19,18 @@ class IsAuthorOrReadOnly(BasePermission):
 
         return obj.author == request.user
 
+
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthorOrReadOnly]
-    
+
     def perform_create(self, serializer):
         if not self.request.user.is_authenticated:
             raise ValidationError("User must be authenticated to create a project.")
-        # Save the project with the current user as the author
+
         project = serializer.save(author=self.request.user)
-        # Optionally add the author as a contributor as well
+
         project.contributors.add(self.request.user)
 
 
@@ -38,43 +39,57 @@ class AddContributorView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        
-        project = Project.objects.get(id=kwargs['project_id'])
-        user = User.objects.get(id=request.data['user_id'])
-        
-        
+
+        project = Project.objects.get(id=kwargs["project_id"])
+        user = User.objects.get(id=request.data["user_id"])
+
         print(f"Request user: {request.user}, Project author: {project.author}")
         print(f"Project ID: {project.id}, User ID: {request.user.id}")
 
-        
         if project.author != request.user:
-            return Response({"detail": "You do not have permission to add contributors to this project."},
-                            status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                {
+                    "detail": "You do not have permission to add contributors to this project."
+                },
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
-        
         Contributor.objects.create(project=project, user=user)
-        return Response({"detail": "Contributor added successfully."}, status=status.HTTP_201_CREATED)
-    
+        return Response(
+            {"detail": "Contributor added successfully."},
+            status=status.HTTP_201_CREATED,
+        )
+
     def delete(self, request, *args, **kwargs):
         project = self.get_object()
         project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class RemoveContributorView(generics.DestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
-        project = Project.objects.get(id=kwargs['project_id'])
-        user_id = kwargs.get('user_id')
-        
+        project = Project.objects.get(id=kwargs["project_id"])
+        user_id = kwargs.get("user_id")
+
         if not user_id:
-            return Response({"detail": "user_id is required."}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(
+                {"detail": "user_id is required."}, status=status.HTTP_400_BAD_REQUEST
+            )
+
         user = User.objects.get(id=user_id)
 
         if project.author != request.user:
-            return Response({"detail": "You do not have permission to remove contributors from this project."},
-                            status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                {
+                    "detail": "You do not have permission to remove contributors from this project."
+                },
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
         project.contributors.remove(user)
-        return Response({"detail": "Contributor removed successfully."}, status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"detail": "Contributor removed successfully."},
+            status=status.HTTP_204_NO_CONTENT,
+        )

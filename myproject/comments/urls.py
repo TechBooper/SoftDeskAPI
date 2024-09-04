@@ -2,7 +2,18 @@ from django.urls import path
 from .views import CommentViewSet
 
 urlpatterns = [
-    path('', CommentViewSet.as_view({'get': 'list', 'post': 'create'})),  # List all comments, create a new comment
-    path('<int:pk>/', CommentViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})),
-    path('comments/<uuid:pk>/', CommentViewSet.as_view({'get': 'retrieve'}), name='comment-detail'),  # Comment detail, update, delete
+    path(
+        "", CommentViewSet.as_view({"get": "list", "post": "create"})
+    ),  # List all comments, create a new comment
+    path(
+        "<int:pk>/",
+        CommentViewSet.as_view(
+            {"get": "retrieve", "put": "update", "delete": "destroy"}
+        ),
+    ),
+    path(
+        "comments/<uuid:pk>/",
+        CommentViewSet.as_view({"get": "retrieve"}),
+        name="comment-detail",
+    ),
 ]

@@ -1,16 +1,19 @@
 from django.db import models
-from django.conf import settings  # Ensure that we use the custom User model set in settings
+from django.conf import (
+    settings,
+)
+
 
 class Project(models.Model):
-    BACKEND = 'BE'
-    FRONTEND = 'FE'
-    IOS = 'IOS'
-    ANDROID = 'AND'
+    BACKEND = "BE"
+    FRONTEND = "FE"
+    IOS = "IOS"
+    ANDROID = "AND"
     PROJECT_TYPES = [
-        (BACKEND, 'Back-End'),
-        (FRONTEND, 'Front-End'),
-        (IOS, 'iOS'),
-        (ANDROID, 'Android'),
+        (BACKEND, "Back-End"),
+        (FRONTEND, "Front-End"),
+        (IOS, "iOS"),
+        (ANDROID, "Android"),
     ]
 
     name = models.CharField(max_length=100)
@@ -18,7 +21,9 @@ class Project(models.Model):
     type = models.CharField(max_length=10, choices=PROJECT_TYPES)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True)
-    contributors = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='projects')
+    contributors = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="projects"
+    )
 
 
 class Contributor(models.Model):
@@ -27,4 +32,4 @@ class Contributor(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ['user', 'project']
+        unique_together = ["user", "project"]

@@ -6,11 +6,12 @@ from comments.models import Comment
 
 
 # Set up Django environment with correct path formatting
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "myproject.settings")
 django.setup()
 
+
 class Command(BaseCommand):
-    help = 'Check and fix invalid UUIDs in the Comment model'
+    help = "Check and fix invalid UUIDs in the Comment model"
 
     def handle(self, *args, **kwargs):
         self.stdout.write("Checking UUID validity...")
@@ -45,7 +46,9 @@ class Command(BaseCommand):
                 except ValueError:
                     # Fix by generating a new UUID
                     new_uuid = uuid.uuid4()
-                    self.stdout.write(f"Fixing Comment ID: {comment_id} -> New UUID: {new_uuid}")
+                    self.stdout.write(
+                        f"Fixing Comment ID: {comment_id} -> New UUID: {new_uuid}"
+                    )
                     comment.id = new_uuid
                     comment.save()
 

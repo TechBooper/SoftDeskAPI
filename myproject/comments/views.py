@@ -12,7 +12,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-    
+
     def check_uuid_validity():
         comments = Comment.objects.all()
         for comment in comments:
