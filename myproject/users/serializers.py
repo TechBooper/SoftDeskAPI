@@ -23,10 +23,9 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
     def update(self, instance, validated_data):
-        # If password is in the validated_data, hash it before saving
         if "password" in validated_data:
             instance.set_password(validated_data["password"])
             validated_data.pop(
                 "password", None
-            )  # Remove password from validated_data to avoid double processing
+            )  
         return super().update(instance, validated_data)
