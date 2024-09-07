@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from .serializers import IssueSerializer
-from myapp.permissions import IsAuthorOrReadOnly
+from myapp.permissions import IsAuthorOrReadOnly, IsContributor
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import generics, status
@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 class IssueViewSet(viewsets.ModelViewSet):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
-    permission_classes = [IsAuthorOrReadOnly]
+    permission_classes = [IsContributor, IsAuthorOrReadOnly]
 
     def perform_create(self, serializer):
         user = self.request.user  # Custom User

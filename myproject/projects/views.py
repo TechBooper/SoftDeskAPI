@@ -2,6 +2,7 @@ from rest_framework import viewsets, generics, permissions, status
 from rest_framework.response import Response
 from .models import Project, Contributor
 from .serializers import ProjectSerializer
+from myapp.permissions import IsAuthorOrReadOnly, IsContributor
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
 from .serializers import ContributorSerializer
 from users.models import User
@@ -23,7 +24,7 @@ class IsAuthorOrReadOnly(BasePermission):
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    permission_classes = [IsAuthorOrReadOnly]
+    permission_classes = [IsContributor, IsAuthorOrReadOnly]
 
     def perform_create(self, serializer):
         if not self.request.user.is_authenticated:
