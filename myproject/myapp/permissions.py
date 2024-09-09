@@ -20,3 +20,11 @@ class IsAuthorOrReadOnly(BasePermission):
         if request.method in SAFE_METHODS:
             return True
         return obj.author == request.user
+
+class IsProjectAuthor(BasePermission):
+    """
+    Custom permission to only allow the project author to add or remove contributors.
+    """
+    
+    def has_object_permission(self, request, view, obj):
+        return obj.author == request.user
